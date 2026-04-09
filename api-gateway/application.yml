@@ -1,0 +1,28 @@
+server:
+  port:8080
+
+spring:
+  application:
+    name:API-GATEWAY
+
+  cloud:
+    gateway:
+      routes:
+        - id: a-user-service
+          uri: lb://A-USER-SERVICE
+          predicates:
+            - Path=/users/**
+          filters:
+            - AuthFilter
+
+        - id: a-appointment-service
+          uri: lb://A-APPOINTMENT-SERVICE
+          predicates:
+            - Path=/appointments/**,/avail/**
+          filters:
+            - AuthFilter
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka%
