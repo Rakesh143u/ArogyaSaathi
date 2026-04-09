@@ -1,6 +1,5 @@
 # Configuration files with secrets
 *.properties
-*.yml
 !src/main/resources/application.properties.example
 !src/main/resources/application.yml.example
 

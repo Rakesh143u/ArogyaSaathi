@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
 
 import java.util.Map;
 
@@ -16,14 +18,24 @@ public class AuthController {
     @Autowired
     private JwtUtil jwtUtil;
 
+    @Autowired
+    private WebClient.Builder webClientBuilder;
     @PostMapping("/login")
-    public Map<String,String> login(@RequestBody Map<String,String> request){
-        String username = request.get("username");
+    public Mono<Map<String,String>> login(@RequestBody Map<String,String> request){
+        String email = request.get("email");
         String password = request.get("password");
-        if("rakesh".equals(username)&&"1234".equals(password)){
-            String token = jwtUtil.generateToken(username);
-            return Map.of("token",token);
+        if(email==null||password==null){
+            throw new RuntimeException("Email or Password Missing");
         }
-        throw new RuntimeException("Invalid Credentials");
+        return webClientBuilder.build()
+                .post()
+                .uri("lb://A-USER-SERVICE/users/login")
+                .bodyValue(Map.of("email",email,"password",password))
+                .retrieve()
+                .bodyToMono(LoginResponse.class)
+                .map(user ->{
+                    String token = jwtUtil.generateToken(user.getEmail());
+                    return Map.of("token",token);
+                });
     }
 }

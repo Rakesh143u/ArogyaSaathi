@@ -25,16 +25,24 @@ public class AuthFilter extends AbstractGatewayFilterFactory<AuthFilter.Config> 
             if(exchange.getRequest().getURI().getPath().contains("/auth")){
                 return chain.filter(exchange);
             }
+
             String authHeader = exchange.getRequest().getHeaders().getFirst("Authorization");
             if(authHeader==null||!authHeader.startsWith("Bearer ")){
                 throw new RuntimeException("Missing or Invalid Authorization header");
             }
+
             String token = authHeader.substring(7);
             try{
                 jwtUtil.validateToken(token);
+                System.out.println("HEADER: " + authHeader);
+                System.out.println("TOKEN: " + token);
             }catch (Exception e){
+                System.out.println("HEADER: " + authHeader);
+                System.out.println("TOKEN: " + token);
                 throw  new RuntimeException("Invalid Token");
             }
+            System.out.println("HEADER: " + authHeader);
+            System.out.println("TOKEN: " + token);
             return chain.filter(exchange);
         };
     }

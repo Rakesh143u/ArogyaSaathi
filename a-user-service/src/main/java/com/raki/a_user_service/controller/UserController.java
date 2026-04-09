@@ -1,6 +1,7 @@
 package com.raki.a_user_service.controller;
 
 
+import com.raki.a_user_service.dto.LoginRequest;
 import com.raki.a_user_service.model.User;
 import com.raki.a_user_service.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<User> login(@RequestBody User user){
-        return userService.login(user.getEmail(),user.getPassword());
+    public ResponseEntity<User> login(@RequestBody LoginRequest request){
+        return userService.login(request.getEmail(),request.getPassword());
     }
 }

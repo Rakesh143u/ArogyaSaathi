@@ -1,6 +1,6 @@
-package com.raki.a_user_service.dto;
+package com.raki.api_gateway;
 
-public class LoginRequest {
+public class LoginResponse {
     private String email;
     private String password;
 
