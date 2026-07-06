@@ -34,7 +34,7 @@ public class AuthController {
                 .retrieve()
                 .bodyToMono(LoginResponse.class)
                 .map(user ->{
-                    String token = jwtUtil.generateToken(user.getEmail());
+                    String token = jwtUtil.generateToken(user.getId(),user.getEmail(), user.getRole());
                     return Map.of("token",token);
                 });
     }

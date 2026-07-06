@@ -21,9 +21,11 @@ public class JwtUtil {
                 .parseClaimsJws(token);
     }
 
-    public String generateToken(String username) {
+    public String generateToken(Long userId,String username,String role) {
         String token = Jwts.builder()
                 .setSubject(username)
+                .claim("role",role)
+                .claim("userid", userId)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60))
                 .signWith(SECRET_KEY)
@@ -33,5 +35,14 @@ public class JwtUtil {
         System.out.println("USERNAME: " + username);
 
         return token;
+    }
+
+    public Claims getClaims(String token){
+        return Jwts.parserBuilder()
+                .setSigningKey(SECRET_KEY)
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+
     }
 }
