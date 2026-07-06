@@ -8,7 +8,6 @@ import lombok.Data;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-@Data
 @Entity
 @Table(name="appoint",uniqueConstraints = @UniqueConstraint(columnNames = {"doctorId","date","time"}))
 public class Appointment {
@@ -26,6 +25,25 @@ public class Appointment {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Status status;
+    private String patientEmail;
+    private String doctorEmail;
+
+    public String getDoctorEmail() {
+        return doctorEmail;
+    }
+
+    public void setDoctorEmail(String doctorEmail) {
+        this.doctorEmail = doctorEmail;
+    }
+
+    public String getPatientEmail() {
+        return patientEmail;
+    }
+
+    public void setPatientEmail(String patientEmail) {
+        this.patientEmail = patientEmail;
+    }
+
     public Long getPatientId() {
         return patientId;
     }

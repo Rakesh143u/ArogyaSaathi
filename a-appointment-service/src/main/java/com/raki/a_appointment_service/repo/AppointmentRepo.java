@@ -5,7 +5,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 
 public interface AppointmentRepo extends JpaRepository<Appointment,Long> {
     boolean existsByDoctorIdAndDateAndTime(Long doctorId, LocalDate date, LocalTime time);
+    List<Appointment> findByPatientEmail(String patientEmail);
+    List<Appointment> findByDoctorId(Long doctorId);
 }
