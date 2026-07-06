@@ -24,6 +24,11 @@ public class User {
     private Role role;
     private String phoneNumber;
 
+    public Long getId() {
+        return id;
+    }
+
+
     public String getName() {
         return name;
     }
